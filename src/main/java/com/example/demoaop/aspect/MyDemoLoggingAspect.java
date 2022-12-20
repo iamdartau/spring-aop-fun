@@ -1,24 +1,38 @@
 package com.example.demoaop.aspect;
 
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class MyDemoLoggingAspect {
 
+    @Pointcut("execution(* com.example.demoaop.dao.*.*(..))")
+    private void pointcutForPackage() {}
+    @Pointcut("execution(* com.example.demoaop.dao.*.get*(..))")
+    private void getterExclude(){}
+    @Before("pointcutForPackage()")
+    public void before(){
+        System.out.println("BEFORE ALL FRO PACKAGE WITH POINTCUT");
+    }
+    @Before("pointcutForPackage()")
+    public void performSmth(){
+        System.out.println("\n===>           performSmth            <===");
+    }
+
+    @Before("pointcutForPackage() || (getterExclude())")
+    public void performSmthButGetter(){
+        System.out.println("\n===>performSmth BUT Getters<===");
+    }
     /*@Before("execution(* add*(com.example.demoaop.model.Account))")
     public void beforeAddAccount(){
         System.out.println("BEFORE ADD ACCOUNT");
     }*/
 
-    @Before("execution(* com.example.demoaop.dao.*.*(..))")
+    /*@Before("execution(* com.example.demoaop.dao.*.*(..))")
     public void beforeAddAccountWithParams(){
         System.out.println("BEFORE ALL FROM PACKAGE");
-    }
+    }*/
 
     /*@Before("execution(public void com.example.demoaop.dao.AccountDao.addAccount())")
     public void beforeAddAccountAdvice(){

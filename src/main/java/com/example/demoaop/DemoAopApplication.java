@@ -14,7 +14,9 @@ public class DemoAopApplication {
         ConfigurableApplicationContext context = SpringApplication.run(DemoAopApplication.class, args);
         AccountDao accountDao = context.getBean("accountDao", AccountDao.class);
         MembershipDao membershipDao = context.getBean("membershipDao", MembershipDao.class);
-        accountDao.addAccount(new Account("Alex", "max"));
+        Account account = new Account("Alex", "max");
+        accountDao.addAccount(account);
+        System.out.println(account.getName());
         membershipDao.addAccount();
         System.out.println(membershipDao.isAdded());
         System.out.println(accountDao.doSmth("hi"));
