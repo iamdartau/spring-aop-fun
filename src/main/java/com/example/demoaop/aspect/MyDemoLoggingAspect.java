@@ -1,25 +1,30 @@
 package com.example.demoaop.aspect;
 
 import org.aspectj.lang.annotation.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Order(1)
 public class MyDemoLoggingAspect {
 
     @Pointcut("execution(* com.example.demoaop.dao.*.*(..))")
     private void pointcutForPackage() {}
     @Pointcut("execution(* com.example.demoaop.dao.*.get*(..))")
     private void getterExclude(){}
+    @Order(3)
     @Before("pointcutForPackage()")
     public void before(){
         System.out.println("BEFORE ALL FRO PACKAGE WITH POINTCUT");
     }
+    @Order(2)
     @Before("pointcutForPackage()")
     public void performSmth(){
         System.out.println("\n===>           performSmth            <===");
     }
 
+    @Order(1)
     @Before("pointcutForPackage() || (getterExclude())")
     public void performSmthButGetter(){
         System.out.println("\n===>performSmth BUT Getters<===");
