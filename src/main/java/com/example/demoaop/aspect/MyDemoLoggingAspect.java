@@ -13,6 +13,10 @@ import java.util.List;
 @Order(1)
 public class MyDemoLoggingAspect {
 
+    @After("pointcutForPackage()")
+    public void afterFinally(JoinPoint joinPoint){
+        System.out.println("AFTER" +joinPoint.getSignature().toShortString());
+    }
     @AfterReturning(
             pointcut = "pointcutForPackage()",
             returning = "result")
