@@ -1,13 +1,30 @@
 package com.example.demoaop.aspect;
 
+import com.example.demoaop.model.Account;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Aspect
 @Component
 @Order(1)
 public class MyDemoLoggingAspect {
+
+    @AfterReturning(
+            pointcut = "pointcutForPackage()",
+            returning = "result")
+    public void after(JoinPoint joinPoint, List<Account> result){
+        System.out.println(joinPoint.getSignature().toShortString());
+        System.out.println("result is: " + result);
+        convertResult(result);
+    }
+
+    private void convertResult(List<Account> result) {
+        result.add(new Account("2","2"));
+    }
 
     @Pointcut("execution(* com.example.demoaop.dao.*.*(..))")
     private void pointcutForPackage() {}

@@ -7,19 +7,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.List;
+
 @SpringBootApplication
 public class DemoAopApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(DemoAopApplication.class, args);
         AccountDao accountDao = context.getBean("accountDao", AccountDao.class);
-        MembershipDao membershipDao = context.getBean("membershipDao", MembershipDao.class);
-        Account account = new Account("Alex", "max");
-        accountDao.addAccount(account);
-        System.out.println(account.getName());
-        membershipDao.addAccount();
-        System.out.println(membershipDao.isAdded());
-        System.out.println(accountDao.doSmth("hi"));
+        List<Account> accounts = accountDao.findAccounts();
+        accounts.forEach(System.out::println);
         context.close();
     }
 
